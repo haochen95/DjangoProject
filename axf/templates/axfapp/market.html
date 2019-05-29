@@ -1,0 +1,18 @@
+{% extends 'axfapp/base.html' %}
+
+
+{% load static %}
+<!--样式设置-->
+{% block linkscript %}
+    <link rel="stylesheet" href="{% static 'market/css/market.css' %}">
+    <script type="text/javascript" src="{% static 'market/js/market.js' %}"></script>
+{% endblock linkscript %}
+
+<!--填充内容-->
+{% block base %}
+<h1>sunck is a good man</h1>
+
+<h1>market</h1>
+
+
+{% endblock base %}

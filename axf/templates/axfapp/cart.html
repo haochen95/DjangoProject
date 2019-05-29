@@ -1,0 +1,16 @@
+{% extends 'axfapp/base.html' %}
+
+{% load static %}
+<!--样式设置-->
+{% block linkscript %}
+    <link rel="stylesheet" href="{% static 'cart/css/cart.css' %}">
+    <script type="text/javascript" src="{% static 'cart/js/cart.js' %}"></script>
+{% endblock linkscript %}
+
+<!--填充内容-->
+{% block base %}
+<h1>sunck is a good man</h1>
+
+<h1>cart</h1>
+
+{% endblock base %}
