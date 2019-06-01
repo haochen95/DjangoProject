@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生页面</title>
+</head>
+<body>
+    <h1>学生信息列表</h1>
+    <ul>
+        <!--传过来的是对象[python04,python05,python06]-->
+        {%for student in students%}
+        <li>
+            {{forloop.counter}}--{{student.sname}}--{{student.scontend}}
+        </li>
+        {% empty %}
+        <li>
+            目前没有学生
+        </li>
+        {%endfor%}
+    </ul>
+</body>
+</html>
