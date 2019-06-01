@@ -1,0 +1,120 @@
+{% extends 'base.html'%}
+{% load staticfiles%}
+
+{% block title %}
+    Document
+{% endblock %}
+
+{% block header_extends %}
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/css/blog.css' %}">
+{% endblock %}
+
+{%block blog_active%}
+    active
+{%endblock%}
+
+{% block contents %}
+
+    <div class="container">
+        <div class="row">
+            <!--分出8列当初博客栏-->
+            <div class="col-md-9 col-sm-8 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{% block blog_list_title %}博客列表{%endblock%}</div>
+                    <div class="panel-body">
+                        {% for b in blog %}
+                        <div class="blog">
+                            <h3><a href="{% url 'blog_detail' b.pk%}">{{b.title}}</a></h3>
+                            <p class="blog-info">
+                                <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> <a href="{% url 'blogs_with_type' b.blog_type.pk%}">{{b.blog_type}}</a>
+                                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>{{b.createTime|date:"Y-m-d"}} &nbsp;&nbsp;
+                                阅读: {{ b.get_read_num }}
+                            </p>
+                            <p>{{b.content | striptags|truncatechars:30}}</p>
+                        </div>
+
+                        {% empty %}
+                        <div class="blog">
+                            <h3>现在还没有博客</h3>
+
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="paginator">
+                    <ul class="pagination">
+                        {# 上一页 #}
+                        <li>
+                            {% if page_of_blogs.has_previous %}
+                                <a href="?page={{page_of_blogs.previous_page_number}}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&laquo;</span>
+                            {% endif %}
+                        </li>
+                        {# 全部页码 #}
+                        {% for pu in  page_of_blogs.paginator.page_range%}
+                            {% if pu == page_of_blogs.number %}
+                                <li class="active"><span>{{pu}}</span></li>
+                            {% else %}
+                                <li><a href="?page={{pu}}">{{pu}}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {# 下一页 #}
+                        <li>
+                            {% if page_of_blogs.has_next %}
+                                <a href="?page={{page_of_blogs.next_page_number}}" aria-label="Next">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&laquo;</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                    <p>
+                        共有 {{page_of_blogs.paginator.count}} 篇博客
+                        当前第{{page_of_blogs.number}}页,共{{page_of_blogs.paginator.num_pages}}页
+                    </p>
+                </div>
+
+            </div>
+
+            <!--分出4列当初分类栏-->
+            <div class="col-md-3 col-sm-4 hidden-xs">
+                <div class="panel panel-default">
+                    <div class="panel-heading">博客分类</div>
+                    <div class="panel-body">
+                        <ul style="list-style-type: none">
+                            {%for b in blog_types %}
+                                <li>
+                                    <a href="{% url 'blogs_with_type' b.pk%}">
+                                        {{b.type_name}}({{b.blog_count}})
+                                    </a>
+                                </li>
+                            {% empty %}
+                                <li>暂无分类</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">日期归档</div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for d in blog_dates %}
+                                <li style="list-style-type: none">
+                                    <a href="{% url 'blogs_with_date' d.year d.month%}">{{ d|date:"Y年m月" }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock%}
